@@ -9,11 +9,22 @@ if [ -z "$workdir" ] ; then
     # to the script (e.g. permissions re-evaled after suid)
     exit 1  # fail
 fi
-# you can set to other place manually
+
+# temporary log file while script is running.
+# you can set to other place manually, ex: logfile=/var/logs/updateall.log
 logfile=$workdir/updateall.run
-# you can set to other place manually
+# list of server to update. 
+# you can set to other place manually, ex: listfile=/var/myfiles/servers.lst
 listfile=$workdir/updateall.lst
-finallogfile=$workdir/update-$(date +%y%m%d)
+
+# You can set finallogfolder to a foldername ("logs" for example)
+# to generate all logs inside that 
+# for example:
+# finallogfolder=$workdir/logs
+# note: you need to manually create that folder
+finallogfolder=$workdir
+# final log file
+finallogfile=$finallogfolder/update-$(date +%y%m%d)
 
 (
 cd $workdir/
@@ -24,9 +35,8 @@ if [ -a $logfile ] ; then
     exit; 
 fi
 
-echo "**************************************"
-echo "* Starting update process..." $(date +%y%m%d) "*"
-echo "**************************************"
+echo " Starting update process..." $(date +%y%m%d)
+echo ""
 cat $listfile | while read line
 do
     dist=$(echo $line | awk '{print $NF}')
@@ -34,37 +44,23 @@ do
 	'CentOS'|'RHEL')
 	    server=$(echo $line | awk '{print($(NF-2))}')
 	    port=$(echo $line | awk '{print($(NF-1))}')
-	    echo ""
-	    echo "**************************************"
-	    echo "***** " $server " " $dist
-	    echo "**************************************"
-	    echo ""
+	    echo $server " " $dist
 	    ssh -n -l root -p $port $server 'yum-complete-transaction -y; yum update -y -y'
 	;;
 	'Debian'|'Ubuntu')
 	    server=echo $line | awk '{print($(NF-2))}'
 	    port=echo $line | awk '{print($(NF-1))}'
-	    echo ""
-	    echo "**************************************"
-	    echo "*   " $server " " $dist "    *"
-	    echo "**************************************"
-	    echo ""
+	    echo $server " " $dist
 	    ssh -n -l root -p $port $server 'apt-get update -y'
 	    ssh -n -l root -p $port $server 'apt-get upgrade -y'
 	;;
 	*)
-	    echo "**************************************"
-	    echo "*     Unknown Linux Distribution     *"
-	    echo "**************************************"
-	    echo ""
+	    echo "Unknown Linux Distribution"
 	;;
     esac
 done
 echo ""
-echo "**************************************"
-echo "*****           All Done         *****"
-echo "**************************************"
-echo ""
+echo "All Done."
 ) 2>&1 | tee -a $logfile
 
 mv $logfile $finallogfile

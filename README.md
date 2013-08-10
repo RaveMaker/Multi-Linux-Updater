@@ -19,10 +19,13 @@ Update multiple Linux OS Distributions from a single server
 
         Hostname Port OS
 
-    for example:
+    for example (leave a blank line in the end of the file):
 
         10.0.0.2 22 CentOS
         10.0.0.3 220 Ubuntu
+        
+
+Note: You should generate and copy the server ssh public code of the computer running this script to the other computers to prevent the script asking for password.
 
 
 #### Supported OS parameter options
