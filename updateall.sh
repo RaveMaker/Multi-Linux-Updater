@@ -24,9 +24,8 @@ if [ -a $logfile ] ; then
     exit; 
 fi
 
-echo "**************************************"
-echo "* Starting update process..." $(date +%y%m%d) "*"
-echo "**************************************"
+echo " Starting update process..." $(date +%y%m%d)
+echo ""
 cat $listfile | while read line
 do
     dist=$(echo $line | awk '{print $NF}')
@@ -34,37 +33,23 @@ do
 	'CentOS'|'RHEL')
 	    server=$(echo $line | awk '{print($(NF-2))}')
 	    port=$(echo $line | awk '{print($(NF-1))}')
-	    echo ""
-	    echo "**************************************"
-	    echo "***** " $server " " $dist
-	    echo "**************************************"
-	    echo ""
+	    echo $server " " $dist
 	    ssh -n -l root -p $port $server 'yum-complete-transaction -y; yum update -y -y'
 	;;
 	'Debian'|'Ubuntu')
 	    server=echo $line | awk '{print($(NF-2))}'
 	    port=echo $line | awk '{print($(NF-1))}'
-	    echo ""
-	    echo "**************************************"
-	    echo "*   " $server " " $dist "    *"
-	    echo "**************************************"
-	    echo ""
+	    echo $server " " $dist
 	    ssh -n -l root -p $port $server 'apt-get update -y'
 	    ssh -n -l root -p $port $server 'apt-get upgrade -y'
 	;;
 	*)
-	    echo "**************************************"
-	    echo "*     Unknown Linux Distribution     *"
-	    echo "**************************************"
-	    echo ""
+	    echo "Unknown Linux Distribution"
 	;;
     esac
 done
 echo ""
-echo "**************************************"
-echo "*****           All Done         *****"
-echo "**************************************"
-echo ""
+echo "All Done."
 ) 2>&1 | tee -a $logfile
 
 mv $logfile $finallogfile
