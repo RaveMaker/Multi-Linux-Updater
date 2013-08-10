@@ -1,8 +1,18 @@
 #!/bin/bash
 
-workdir=/scripts
+# log and updateall.lst files by default should be inside one workdir.
+# by default workdir is the script dir
+workdir="`dirname \"$0\"`"
+workdir="`( cd \"$workdir\" && pwd )`"
+if [ -z "$workdir" ] ; then
+    # error; for some reason, the path is not accessible
+    # to the script (e.g. permissions re-evaled after suid)
+    exit 1  # fail
+fi
+# you can set to other place manually
 logfile=$workdir/updateall.run
-listfile=$workdir/allservers.lst
+# you can set to other place manually
+listfile=$workdir/updateall.lst
 finallogfile=$workdir/update-$(date +%y%m%d)
 
 (
