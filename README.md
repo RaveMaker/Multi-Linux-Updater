@@ -15,13 +15,14 @@ Update multiple Linux OS Distributions from a single server
 
         cp updateall.lst.example updateall.lst
 
-    and fill it with your servers list:
+    and fill it with your servers list (one in a row):
 
         Hostname Port OS
 
     for example:
 
         10.0.0.2 22 CentOS
+        10.0.0.3 220 Ubuntu
 
 
 #### Supported OS parameter options
