@@ -28,5 +28,6 @@ Note: You should generate and copy the server ssh public code of the computer ru
 * Cent0S
 * Ubuntu
 
-by [RaveMaker][RaveMaker].
+by [RaveMaker][RaveMaker] & [ET][ET].
 [RaveMaker]: http://ravemaker.net
+[ET]: http://etcs.me
