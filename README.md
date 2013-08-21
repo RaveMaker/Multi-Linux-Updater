@@ -1,7 +1,7 @@
 Linux Update Manager
 ====================
 
-by [RaveMaker][RaveMaker]
+by [RaveMaker][RaveMaker].
 
 Update multiple Linux OS Distributions from a single server
 
