@@ -1,30 +1,9 @@
 #!/bin/bash
 
-# log and updateall.lst files by default should be inside one workdir.
-# by default workdir is the script dir
-workdir="`dirname \"$0\"`"
-workdir="`( cd \"$workdir\" && pwd )`"
-if [ -z "$workdir" ] ; then
-    # error; for some reason, the path is not accessible
-    # to the script (e.g. permissions re-evaled after suid)
-    exit 1  # fail
-fi
-
-# temporary log file while script is running.
-# you can set to other place manually, ex: logfile=/var/logs/updateall.log
-logfile=$workdir/updateall.run
-# list of server to update. 
-# you can set to other place manually, ex: listfile=/var/myfiles/servers.lst
-listfile=$workdir/updateall.lst
-
-# You can set finallogfolder to a foldername ("logs" for example)
-# to generate all logs inside that 
-# for example:
-# finallogfolder=$workdir/logs
-# note: you need to manually create that folder
-finallogfolder=$workdir
-# final log file
-finallogfile=$finallogfolder/update-$(date +%y%m%d)
+workdir=/scripts
+logfile=$workdir/tmp/updateall.run
+listfile=$workdir/lst/allservers.lst
+finallogfile=$workdir/log/update-$(date +%y%m%d)
 
 (
 cd $workdir/
@@ -35,32 +14,56 @@ if [ -a $logfile ] ; then
     exit; 
 fi
 
-echo " Starting update process..." $(date +%y%m%d)
-echo ""
+echo "**************************************"
+echo "* Starting update process..." $(date +%y%m%d) "*"
+echo "**************************************"
 cat $listfile | while read line
 do
     dist=$(echo $line | awk '{print $NF}')
     case $dist in
-	'CentOS'|'RHEL')
+	'CentOS'|'RHEL'|'OracleLinux')
 	    server=$(echo $line | awk '{print($(NF-2))}')
 	    port=$(echo $line | awk '{print($(NF-1))}')
-	    echo $server " " $dist
+	    echo ""
+	    echo "**************************************"
+	    echo "***** " $server " " $dist
+	    echo "**************************************"
+	    echo ""
 	    ssh -n -l root -p $port $server 'yum-complete-transaction -y; yum update -y -y'
+	;;
+	'Solaris')
+	    server=$(echo $line | awk '{print($(NF-2))}')
+	    port=$(echo $line | awk '{print($(NF-1))}')
+	    echo ""
+	    echo "**************************************"
+	    echo "***** " $server " " $dist
+	    echo "**************************************"
+	    echo ""
+	    ssh -n -l root -p $port $server '/opt/csw/bin/pkgutil -U; /opt/csw/bin/pkgutil -u'
 	;;
 	'Debian'|'Ubuntu')
 	    server=echo $line | awk '{print($(NF-2))}'
 	    port=echo $line | awk '{print($(NF-1))}'
-	    echo $server " " $dist
-	    ssh -n -l root -p $port $server 'apt-get update -y'
-	    ssh -n -l root -p $port $server 'apt-get upgrade -y'
+	    echo ""
+	    echo "**************************************"
+	    echo "*   " $server " " $dist "    *"
+	    echo "**************************************"
+	    echo ""
+	    ssh -n -l root -p $port $server 'apt-get update -y; apt-get upgrade -y'
 	;;
 	*)
-	    echo "Unknown Linux Distribution"
+	    echo "**************************************"
+	    echo "*     Unknown Linux Distribution     *"
+	    echo "**************************************"
+	    echo ""
 	;;
     esac
 done
 echo ""
-echo "All Done."
+echo "**************************************"
+echo "*****           All Done         *****"
+echo "**************************************"
+echo ""
 ) 2>&1 | tee -a $logfile
 
 mv $logfile $finallogfile
