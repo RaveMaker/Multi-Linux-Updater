@@ -13,12 +13,12 @@ fi
 # temporary log file while script is running.
 # you can set to other place manually, ex: logfile=/var/logs/updateall.log
 logfile=$workdir/updateall.run
-# list of server to update. 
+# list of server to update.
 # you can set to other place manually, ex: listfile=/var/myfiles/servers.lst
 listfile=$workdir/updateall.lst
 
 # You can set finallogfolder to a foldername ("logs" for example)
-# to generate all logs inside that 
+# to generate all logs inside that
 # for example:
 # finallogfolder=$workdir/logs
 # note: you need to manually create that folder

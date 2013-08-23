@@ -19,7 +19,7 @@ Update multiple Linux OS Distributions from a single server
 
         10.0.0.2 22 CentOS
         10.0.0.3 220 Ubuntu
-        
+
 Note: You should generate and copy the server ssh public code of the computer running this script to the other computers to prevent the script asking for password.
 
 #### Supported OS parameter options
@@ -27,6 +27,8 @@ Note: You should generate and copy the server ssh public code of the computer ru
 * REHL
 * Cent0S
 * Ubuntu
+* Solaris
+* OracleLinux
 
 by [RaveMaker][RaveMaker] & [ET][ET].
 [RaveMaker]: http://ravemaker.net

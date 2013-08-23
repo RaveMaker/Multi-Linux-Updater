@@ -1,6 +1,6 @@
 Hostname1 22 CentOS
-Hostname2 22 Ubuntu
-Hostname3 22 RHEL
 Hostname4 22 Debian
 Hostname5 22 OracleLinux
+Hostname3 22 RHEL
 Hostname6 22 Solaris
+Hostname2 22 Ubuntu
