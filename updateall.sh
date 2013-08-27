@@ -2,7 +2,9 @@
 
 # Update multiple Linux OS Distributions from a single server
 #
-# by RaveMaker - http://ravemaker.net
+# by RaveMaker & ET
+# http://ravemaker.net
+# http://etcs.me
 
 # log and updateall.lst files by default should be inside one workdir.
 # by default workdir is the script dir
