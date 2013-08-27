@@ -1,5 +1,9 @@
 #!/bin/bash
 
+# Update multiple Linux OS Distributions from a single server
+#
+# by RaveMaker - http://ravemaker.net
+
 # log and updateall.lst files by default should be inside one workdir.
 # by default workdir is the script dir
 workdir="`dirname \"$0\"`"
@@ -32,7 +36,7 @@ if [ -a $logfile ] ; then
     echo ""
     echo "Script Is Running! check " $logfile
     echo ""
-    exit; 
+    exit;
 fi
 
 echo " Starting update process..." $(date +%y%m%d)
