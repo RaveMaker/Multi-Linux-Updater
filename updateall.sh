@@ -32,7 +32,7 @@ finallogfolder=$workdir
 # final log file
 finallogfile=$finallogfolder/update-$(date +%y%m%d)
 
-(
+# Check if the script is still running
 cd $workdir/
 if [ -a $logfile ] ; then
     echo ""
@@ -41,6 +41,8 @@ if [ -a $logfile ] ; then
     exit;
 fi
 
+# Start Logging
+(
 echo " Starting update process..." $(date +%y%m%d)
 echo ""
 cat $listfile | while read line
@@ -48,14 +50,14 @@ do
     dist=$(echo $line | awk '{print $NF}')
     case $dist in
 	'CentOS'|'RHEL'|'OracleLinux')
-	    server=$(echo $line | awk '{print($(NF-2))}')
-	    port=$(echo $line | awk '{print($(NF-1))}')
+	    server="$(echo $line | awk '{print($(NF-2))}')"
+	    port="$(echo $line | awk '{print($(NF-1))}')"
 	    echo $server " " $dist
 	    ssh -n -l root -p $port $server 'yum-complete-transaction -y; yum update -y -y'
 	;;
         'Solaris')
-            server=$(echo $line | awk '{print($(NF-2))}')
-            port=$(echo $line | awk '{print($(NF-1))}')
+	    server="$(echo $line | awk '{print($(NF-2))}')"
+	    port="$(echo $line | awk '{print($(NF-1))}')"
             echo ""
             echo "**************************************"
             echo "***** " $server " " $dist
@@ -64,8 +66,8 @@ do
             ssh -n -l root -p $port $server '/opt/csw/bin/pkgutil -U; /opt/csw/bin/pkgutil -u'
         ;;
 	'Debian'|'Ubuntu')
-	    server=echo $line | awk '{print($(NF-2))}'
-	    port=echo $line | awk '{print($(NF-1))}'
+	    server="$(echo $line | awk '{print($(NF-2))}')"
+	    port="$(echo $line | awk '{print($(NF-1))}')"
 	    echo $server " " $dist
 	    ssh -n -l root -p $port $server 'apt-get update -y'
 	    ssh -n -l root -p $port $server 'apt-get upgrade -y'
