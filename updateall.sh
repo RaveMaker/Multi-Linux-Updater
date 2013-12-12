@@ -30,7 +30,7 @@ listfile=$workdir/updateall.lst
 # note: you need to manually create that folder
 finallogfolder=$workdir
 # final log file
-finallogfile=$finallogfolder/update-$(date +%y%m%d)
+finallogfile=$finallogfolder/update-$(date +%Y%m%d)
 
 # Check if the script is still running
 cd $workdir/
@@ -43,7 +43,7 @@ fi
 
 # Start Logging
 (
-echo " Starting update process..." $(date +%y%m%d)
+echo " Starting update process..." $(date +%d-%m-%Y)
 echo ""
 cat $listfile | while read line
 do
