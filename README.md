@@ -30,6 +30,7 @@ Note: You should generate and copy the server ssh public code of the computer ru
 * Solaris
 * OracleLinux
 
-by [RaveMaker][RaveMaker] & [ET][ET].
+Authors: [RaveMaker][RaveMaker] & [ET][ET].
+
 [RaveMaker]: http://ravemaker.net
 [ET]: http://etcs.me
